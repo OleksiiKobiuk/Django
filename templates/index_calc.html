@@ -5,10 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-{#{% if  err  %}#}
-{#<h1>wrong</h1>#}
-{#{% endif %}#}
+{% if  result != None  %}
+    <h1>{{ num1 }} {{ sign }} {{ num2 }} = {{ result }}</h1>
+{% else %}
+    <h1>Wrong input</h1>
+{% endif %}
 
-<h1> = {{ result }}</h1>
+{#<h1> = {{ result }}</h1>#}
 </body>
 </html>
