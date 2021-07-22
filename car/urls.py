@@ -1,7 +1,6 @@
 from django.urls import path
-
-from .views import home, add_car
+from .views import MyView, MyViewSecond
 urlpatterns = [
-    path('', home),
-    path('/create/<str:model>/<int:year>/', add_car)
+    path('', MyView.as_view()),
+    path('<int:id>/', MyViewSecond.as_view())
 ]

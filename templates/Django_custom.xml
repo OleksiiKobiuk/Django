@@ -1,8 +1,0 @@
-<templateSet group="Django_custom">
-  <template name="ddb" value="DATABASES = {&#10;    'default': {&#10;        'ENGINE': 'django.db.backends.mysql',&#10;        'NAME': 'django2_db',&#10;        'USER': 'root',&#10;        'PASSWORD': '!qazxsw2',&#10;        'HOST': 'localhost',&#10;        'PORT': '3306'&#10;    }&#10;}" description="Create DATABASE" toReformat="false" toShortenFQNames="true">
-    <context>
-      <option name="Django" value="true" />
-      <option name="Python" value="true" />
-    </context>
-  </template>
-</templateSet>
