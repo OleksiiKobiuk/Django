@@ -35,6 +35,6 @@ class MyView(APIView):
         return Response('hello from delete')
 
 class MyViewSecond(APIView):
-    def get(self, id, *args, **kwargs):
+    def get(self, *args, **kwargs):
         print(kwargs.get('id'))
         return Response('Ok')
