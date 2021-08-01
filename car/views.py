@@ -64,8 +64,8 @@ class CarCreateListView(APIView):  # відповідає за доставан�
         # return Response('')
 
         qs = CarModel.objects.all()
-        brand = self.request.query_params.get('brand')
-        year = self.request.query_params.get('year')
+        brand = self.request.query_params.get('brand', None)
+        year = self.request.query_params.get('year', None)
         if brand:
             qs = qs.filter(brand__iexact=brand)
         if year:

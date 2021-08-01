@@ -4,7 +4,6 @@ from .views import CarCreateListView, RetriaveUpdDeleteView
 urlpatterns = [
     path('', CarCreateListView.as_view(), name = 'car_list_create'), # name = 'car_list_create' потрібно для формування
     # автоматичної документації
-    path('/<int:pk>', RetriaveUpdDeleteView.as_view(), name ='car_retriave_delete')  #pk - primery key, пишеться замість id
-    # path('', MyView.as_view()),
-    # path('<int:id>/', MyViewSecond.as_view())
+    path('/<int:pk>', RetriaveUpdDeleteView.as_view(), name ='car_retriave_delete'),  #pk - primery key, пишеться замість id
+
 ]
