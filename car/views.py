@@ -53,10 +53,26 @@ from .serializers import CarSerializer
 
 class CarCreateListView(APIView):  # відповідає за доставання всього сипску і створення якогось нового
     def get(self, *args, **kwargs):  # дістати весь список
-        qs = CarModel.objects.all() #query set сформує запит в БД
-        serializer = CarSerializer(qs, many=True) # first parameter 'instance' - те, що вже збережено в БД, зараз це - qs,
-        # many=True вказує, що буде багато об'єктів, масив, оскільки тягнемо всіх CarModel.objects.all()
-        return Response(serializer.data)  # data - це вже сформований JSON
+        # qs = CarModel.objects.all() #query set сформує запит в БД
+        # serializer = CarSerializer(qs, many=True) # first parameter 'instance' - те, що вже збережено в БД, зараз це - qs,
+        # # many=True вказує, що буде багато об'єктів, масив, оскільки тягнемо всіх CarModel.objects.all()
+        # return Response(serializer.data)  # data - це вже сформований JSON
+
+        # qs = CarModel.objects.all().filter(year__gt=2015)
+        # qs = qs.filter(model__iexact='nissan')
+        # print(qs)
+        # return Response('')
+
+        qs = CarModel.objects.all()
+        brand = self.request.query_params.get('brand')
+        year = self.request.query_params.get('year')
+        if brand:
+            qs = qs.filter(brand__iexact=brand)
+        if year:
+            qs = qs.filter(year__gte=year)
+        serializer = CarSerializer(qs, many=True).data
+        return Response(serializer, status.HTTP_200_OK)
+
 
     def post(self, *args, **kwargs):
         body = self.request.data   # поле data в request, що надходить від користувача, містить тіло з даними, які будемо додавати в БД
