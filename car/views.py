@@ -12,8 +12,11 @@
 # def add_car(request, model, year):
 #     cars.append({'model': model, 'year': year})
 #     return render(request, 'index.html', {'cars': cars})
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+
 from .models import CarModel
 from .serializers import CarSerializer
 
@@ -63,7 +66,7 @@ class CarCreateListView(APIView):  # відповідає за доставан�
         serializer.save() #збереження перевірених даних в БД
         return Response(serializer.data)
 
-class RetriaveDeleteVieiw(APIView):   # витягує і видаляє об'єкт по айді
+class RetriaveUpdDeleteView(APIView):   # витягує і видаляє об'єкт по айді
     def get(self, *args, **kwargs):
         pk = kwargs.get('pk')
         try:
@@ -73,14 +76,31 @@ class RetriaveDeleteVieiw(APIView):   # витягує і видаляє об'є
         serializer = CarSerializer(data)
         return Response(serializer.data) #повертаємо запитувані дані
 
-    def delete(self, *args, **kwargs):
+    def patch(self, *args, **kwargs):
         pk = kwargs.get('pk')
-        try:
-            data = CarModel.objects.get(pk=pk)  # метод get в objects моделі витягує з БД завжди 1 об'єкт по заданому id (pk)
-        except Exception as e:
-            return Response('Not found')
-        data.delete()
-        return Response ('Deleted')
+        instance = get_object_or_404(CarModel, pk=pk)
+        serializer = CarSerializer(instance, self.request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, *args, **kwargs):
+        # pk = kwargs.get('pk')
+        # try:
+        #     data = CarModel.objects.get(pk=pk)  # метод get в objects моделі витягує з БД завжди 1 об'єкт по заданому id (pk)
+        # except Exception as e:
+        #     return Response('Not found')
+        # data.delete()
+        # return Response ('Deleted')
+
+        pk = kwargs.get('pk')
+        instance = get_object_or_404(CarModel, pk=pk)
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
 
 
 
