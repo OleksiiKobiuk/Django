@@ -86,7 +86,8 @@ class RetriaveUpdDeleteView(APIView):   # витягує і видаляє об'
     def get(self, *args, **kwargs):
         pk = kwargs.get('pk')
         try:
-            data = CarModel.objects.get(pk=pk) #метод get в objects моделі витягує з БД завжди 1 об'єкт по заданому id (pk)
+            data = CarModel.objects.get(pk=pk) #метод get в objects моделі витягує
+            # з БД завжди 1 об'єкт по заданому id (pk)
         except Exception as e:
             return Response('Not found')
         serializer = CarSerializer(data)
