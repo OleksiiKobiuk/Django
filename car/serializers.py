@@ -20,6 +20,6 @@ class CarSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('only odd years')
         return year
 
-    def validate(self, attrs):   #приходять через attrs повністю всі дані для валідації
-        print(attrs)
-        return attrs
+    # def validate(self, attrs):   #приходять через attrs повністю всі дані для валідації
+    #     print(attrs)
+    #     return attrs

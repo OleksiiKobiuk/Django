@@ -16,6 +16,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
 
 from .models import CarModel
 from .serializers import CarSerializer
@@ -51,8 +53,28 @@ from .serializers import CarSerializer
 # lh:8000/cars/:id PATCH update a few fields
 # lh:8000/cars/:id DELETE delete item
 
-class CarCreateListView(APIView):  # відповідає за доставання всього сипску і створення якогось нового
-    def get(self, *args, **kwargs):  # дістати весь список
+class CarCreateListView(ListCreateAPIView):  # відповідає за доставання всього сипску і створення якогось нового
+    serializer_class = CarSerializer
+    # queryset = CarModel.objects.all()
+
+    def get_queryset(self):
+        qs = CarModel.objects.all()
+        params = self.request.query_params
+        brand_start = params.get('brand_start', None)
+        if brand_start:
+            qs = qs.filter(brand__istartswith=brand_start)
+        return qs
+
+
+# class CarCreateListView(GenericAPIView, ListModelMixin, CreateModelMixin):  # відповідає за доставання всього сипску і створення якогось нового
+#     serializer_class = CarSerializer
+#     queryset = CarModel.objects.all()
+#
+#     def get(self, request, *args, **kwargs):
+#         return super().list(request, *args, **kwargs)
+
+
+    # def get(self, *args, **kwargs):  # дістати весь список
         # qs = CarModel.objects.all() #query set сформує запит в БД
         # serializer = CarSerializer(qs, many=True) # first parameter 'instance' - те, що вже збережено в БД, зараз це - qs,
         # # many=True вказує, що буде багато об'єктів, масив, оскільки тягнемо всіх CarModel.objects.all()
@@ -63,57 +85,67 @@ class CarCreateListView(APIView):  # відповідає за доставан�
         # print(qs)
         # return Response('')
 
-        qs = CarModel.objects.all()
-        brand = self.request.query_params.get('brand', None)
-        year = self.request.query_params.get('year', None)
-        if brand:
-            qs = qs.filter(brand__iexact=brand)
-        if year:
-            qs = qs.filter(year__gte=year)
-        serializer = CarSerializer(qs, many=True).data
-        return Response(serializer, status.HTTP_200_OK)
+        # qs = CarModel.objects.all()
+        # brand = self.request.query_params.get('brand', None)
+        # year = self.request.query_params.get('year', None)
+        # if brand:
+        #     qs = qs.filter(brand__iexact=brand)
+        # if year:
+        #     qs = qs.filter(year__gte=year)
+        # serializer = CarSerializer(qs, many=True).data
+        # return Response(serializer, status.HTTP_200_OK)
 
+    # def post(self, request, *args, **kwargs):
+    #     return super().create(request, *args, **kwargs)
 
-    def post(self, *args, **kwargs):
-        body = self.request.data   # поле data в request, що надходить від користувача, містить тіло з даними, які будемо додавати в БД
-        serializer = CarSerializer(data=body)
-        if not serializer.is_valid(): # перевірка чи немає в отриманих даних від користувача помилки
-            return Response(serializer.errors)
-        serializer.save() #збереження перевірених даних в БД
-        return Response(serializer.data)
+    # def post(self, *args, **kwargs):
+    #     body = self.request.data   # поле data в request, що надходить від користувача, містить тіло з даними, які будемо додавати в БД
+    #     serializer = CarSerializer(data=body)
+    #     if not serializer.is_valid(): # перевірка чи немає в отриманих даних від користувача помилки
+    #         return Response(serializer.errors)
+    #     serializer.save() #збереження перевірених даних в БД
+    #     return Response(serializer.data)
 
-class RetriaveUpdDeleteView(APIView):   # витягує і видаляє об'єкт по айді
-    def get(self, *args, **kwargs):
-        pk = kwargs.get('pk')
-        try:
-            data = CarModel.objects.get(pk=pk) #метод get в objects моделі витягує
-            # з БД завжди 1 об'єкт по заданому id (pk)
-        except Exception as e:
-            return Response('Not found')
-        serializer = CarSerializer(data)
-        return Response(serializer.data) #повертаємо запитувані дані
+class RetriaveUpdDeleteView(RetrieveUpdateDestroyAPIView):
+    serializer_class = CarSerializer
+    queryset = CarModel
+    lookup_field = 'id'
 
-    def patch(self, *args, **kwargs):
-        pk = kwargs.get('pk')
-        instance = get_object_or_404(CarModel, pk=pk)
-        serializer = CarSerializer(instance, self.request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    # def get_object(self):
+    #     return CarModel.objects.get(pk=6)
 
-    def delete(self, *args, **kwargs):
-        # pk = kwargs.get('pk')
-        # try:
-        #     data = CarModel.objects.get(pk=pk)  # метод get в objects моделі витягує з БД завжди 1 об'єкт по заданому id (pk)
-        # except Exception as e:
-        #     return Response('Not found')
-        # data.delete()
-        # return Response ('Deleted')
-
-        pk = kwargs.get('pk')
-        instance = get_object_or_404(CarModel, pk=pk)
-        instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+# class RetriaveUpdDeleteView(GenericAPIView):   # витягує і видаляє об'єкт по айді
+#     def get(self, *args, **kwargs):
+#         pk = kwargs.get('pk')
+#         try:
+#             data = CarModel.objects.get(pk=pk) #метод get в objects моделі витягує
+#             # з БД завжди 1 об'єкт по заданому id (pk)
+#         except Exception as e:
+#             return Response('Not found')
+#         serializer = CarSerializer(data)
+#         return Response(serializer.data) #повертаємо запитувані дані
+#
+#     def patch(self, *args, **kwargs):
+#         pk = kwargs.get('pk')
+#         instance = get_object_or_404(CarModel, pk=pk)
+#         serializer = CarSerializer(instance, self.request.data, partial=True)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
+#
+#     def delete(self, *args, **kwargs):
+#         # pk = kwargs.get('pk')
+#         # try:
+#         #     data = CarModel.objects.get(pk=pk)  # метод get в objects моделі витягує з БД завжди 1 об'єкт по заданому id (pk)
+#         # except Exception as e:
+#         #     return Response('Not found')
+#         # data.delete()
+#         # return Response ('Deleted')
+#
+#         pk = kwargs.get('pk')
+#         instance = get_object_or_404(CarModel, pk=pk)
+#         instance.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
