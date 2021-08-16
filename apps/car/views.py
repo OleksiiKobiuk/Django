@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 
-from .models import CarModel
+from core.models import CarModel
 from .serializers import CarSerializer
 
 # class MyView(APIView):
