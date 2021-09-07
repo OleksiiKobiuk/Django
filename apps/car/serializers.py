@@ -13,8 +13,12 @@ class CarSerializer(serializers.ModelSerializer):
     ])
     class Meta:
         model = CarModel
-        exclude = ('user', ) # виводить всі поля, крім user
+        fields = ('id', 'brand', 'model', 'year', 'user', 'brand_name')
+        extra_kwargs = {
+            'user': {"write_only": True}
+        }
         # fields = '__all__'  # отримуємо всі поля
+        # exclude = ('user', ) # виводить всі поля, крім user
 
     # def validate_year(self, year):
     #     if year % 2 == 0:
