@@ -28,3 +28,8 @@ class CarSerializer(serializers.ModelSerializer):
     # def validate(self, attrs):   #приходять через attrs повністю всі дані для валідації
     #     print(attrs)
     #     return attrs
+
+class CarByUserIdSerializer(CarSerializer): #серіалайзер для створення авто по айді юзера
+    class Meta:
+        model = CarModel
+        fields = ('id', 'brand', 'model', 'year', 'brand_name')

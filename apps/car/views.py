@@ -60,9 +60,9 @@ class CarCreateListView(ListCreateAPIView):  # відповідає за дос�
     def get_queryset(self):
         qs = CarModel.objects.all()
         params = self.request.query_params
-        brand_start = params.get('brand_start', None)
-        if brand_start:
-            qs = qs.filter(brand__istartswith=brand_start)
+        user_id = params.get('userId', None) # для пошуку авто по id юзера, типу GET localhost:8000/api/v1/cars?userId=1
+        if user_id:
+            qs = qs.filter(user_id=user_id)
         return qs
 
 
