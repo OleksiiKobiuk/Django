@@ -30,3 +30,19 @@ class UserSerializer(serializers.ModelSerializer):
         # model.set_password(password)
         # model.save()
         return user
+
+class UserUpdateSerializer(UserSerializer):
+    class Meta:
+        model = UserModel
+        fields = ('id', 'email', 'profile', 'cars')
+
+# визначаємо в методі як будуть оновлятися вкладеності юзера, напр. profile
+    def update(self, instance, validated_data):
+        profile=validated_data.pop('profile', None) # з validated_data забираємо profile
+        if profile:
+            ProfileSerializer().update(instance.profile, profile) # отримуємо екземпляр серіалайзеру профайла (ProfileSerializer())
+            # update(instance.profile) - витягуємо спершу дані, що є в базі даних
+            # другий параметр вказує, чим оновити instance (update(instance.profile, profile) - тим профайлом, що вже вище провалідувався
+        return super().update(instance, validated_data)
+        # super() - по суті є сам серіалайзер, а від нього обновляємо instance юзера з UcerModel
+        # і передаємо validated_data

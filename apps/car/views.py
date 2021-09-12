@@ -20,6 +20,7 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveU
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 
 from core.models import CarModel
+from core.paginations.car_paginator import CarPagination
 from .serializers import CarSerializer
 
 # class MyView(APIView):
@@ -55,6 +56,7 @@ from .serializers import CarSerializer
 
 class CarCreateListView(ListCreateAPIView):  # відповідає за доставання всього сипску і створення якогось нового
     serializer_class = CarSerializer
+    pagination_class = CarPagination  # додаємо виведення зміненої пагінації з car_paginator.py
     # queryset = CarModel.objects.all()
 
     def get_queryset(self):

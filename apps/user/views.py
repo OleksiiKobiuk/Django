@@ -2,7 +2,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
-from .user_serializers import UserSerializer
+from .user_serializers import UserSerializer, UserUpdateSerializer
 from apps.car.serializers import CarByUserIdSerializer
 
 UserModel: User = get_user_model()
@@ -13,7 +13,7 @@ class UserListCreateView(ListCreateAPIView):
 
 # виведення/видалення/оновлення юзера по id
 class UserRetrieveUpdateDelete(RetrieveUpdateDestroyAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserUpdateSerializer
     lookup_url_kwarg = 'user_id'
     queryset = UserModel.objects.all()
 
