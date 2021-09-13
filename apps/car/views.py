@@ -18,9 +18,11 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from core.models import CarModel
 from core.paginations.car_paginator import CarPagination
+from core.filters.car_filter import CarFilter
 from .serializers import CarSerializer
 
 # class MyView(APIView):
@@ -55,8 +57,10 @@ from .serializers import CarSerializer
 # lh:8000/cars/:id DELETE delete item
 
 class CarCreateListView(ListCreateAPIView):  # відповідає за доставання всього сипску і створення якогось нового
+    permission_classes = (IsAuthenticatedOrReadOnly,) # обов'язково має бути кортеж з комою
     serializer_class = CarSerializer
     pagination_class = CarPagination  # додаємо виведення зміненої пагінації з car_paginator.py
+    filterset_class = CarFilter # додавання фільтрації з car_filter.py
     # queryset = CarModel.objects.all()
 
     def get_queryset(self):

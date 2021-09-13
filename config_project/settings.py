@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os.path
 from pathlib import Path
 from .rest_config import *
+from .jwt_conf import *  # для токінів
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters', #додаємо після встановлення даного пакету (pipenv install django-filter)
+    'rest_framework_simplejwt', # додаємо після встановлення даного пакету (pipenv install djangorestframework-simplejwt)
+    'rest_framework_simplejwt.token_blacklist', # в БД додастся таблиця, в якій будуть зберігатися токіни, що вже заборонені
+    
+
 
     'core',
     'apps.user',

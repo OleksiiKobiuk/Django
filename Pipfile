@@ -11,6 +11,7 @@ sqlparse = "*"
 Django = "*"
 djangorestframework = "*"
 django-filter = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
