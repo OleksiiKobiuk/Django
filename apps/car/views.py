@@ -57,7 +57,7 @@ from .serializers import CarSerializer
 # lh:8000/cars/:id DELETE delete item
 
 class CarCreateListView(ListCreateAPIView):  # відповідає за доставання всього сипску і створення якогось нового
-    permission_classes = (IsAuthenticatedOrReadOnly,) # обов'язково має бути кортеж з комою
+    permission_classes = (IsAuthenticatedOrReadOnly,) # якщо не авторизований, то лише перегляд (обов'язково має бути кортеж з комою)
     serializer_class = CarSerializer
     pagination_class = CarPagination  # додаємо виведення зміненої пагінації з car_paginator.py
     filterset_class = CarFilter # додавання фільтрації з car_filter.py
