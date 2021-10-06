@@ -1,4 +1,7 @@
+from django.conf.urls.static import static
 from django.urls import path, include
+
+from config_project import settings
 
 urlpatterns = [
     path('cars', include('apps.car.urls')),

@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, UpdateAPIView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAdminUser # AllowAny - дозвіл доступу для всіх і можна буде створити нового користувача,
@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser # AllowAny - доз
 
 from .user_serializers import UserSerializer, UserUpdateSerializer
 from apps.car.serializers import CarByUserIdSerializer
+from ..user_profile.serializers import ProfilePhotoSerializer
 
 UserModel: User = get_user_model()
 
@@ -23,10 +24,17 @@ class UserRetrieveUpdateDelete(RetrieveUpdateDestroyAPIView):
 
 # створення авто по id юзера
 class AddCarByUserIdView(CreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdminUser,) # дозвіл тільки адміну створювати авто
     serializer_class = CarByUserIdSerializer
     queryset = UserModel # передаємо дану моделі в кверісет, а потім по кверісету даний клас шукатиме юзера
 
     # метод для збереження id юзера перед створенням авто
     def perform_create(self, serializer):
         serializer.save(user=self.get_object())
+
+class UploadPhotoToProfileView(UpdateAPIView):
+    serializer_class = ProfilePhotoSerializer
+    http_method_names = ('put',)   # вказує, що можна використовувати метод put
+
+    def get_object(self):
+        return self.request.user.profile # отрмуємо з юзера об'єкт - профайл

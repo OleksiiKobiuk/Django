@@ -137,6 +137,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'  # по даній url користувач зможе стягувати фотографії (localhost:8000/media/images/назва файлу з фото)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'data')   # там, де файли будуть зберігатися локально: в корені нашого проекту буде папка data, куди зберігатимемо фото
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
