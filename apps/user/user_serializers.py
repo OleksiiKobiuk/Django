@@ -1,12 +1,12 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
 from django.contrib.auth.models import User
 
-from apps.user_profile.serializers import ProfileSerializer
-from core.models import ProfileModel
+from rest_framework import serializers
+
 from apps.car.serializers import CarSerializer
+from apps.user_profile.serializers import ProfileSerializer
 from core.manager import CustomUserManager
+from core.models import ProfileModel
 
 UserModel = get_user_model()
 
@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
     # read_only=True - при запису юзера авто не будемо записувати
     class Meta:
         model = UserModel
-        fields = ('id', 'email', 'password', 'profile', 'cars')
+        fields = ('id', 'email', 'password', 'profile', 'cars', 'auto_clubs')
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -34,7 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(UserSerializer):
     class Meta:
         model = UserModel
-        fields = ('id', 'email', 'profile', 'cars')
+        fields = ('id', 'email', 'profile', 'cars', 'auto_clubs')
 
 # визначаємо в методі як будуть оновлятися вкладеності юзера, напр. profile
     def update(self, instance, validated_data):

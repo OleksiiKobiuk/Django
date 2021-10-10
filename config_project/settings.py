@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os.path
 from pathlib import Path
-from .rest_config import *
+
 from .jwt_conf import *  # для токінів
+from .rest_config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,7 +54,8 @@ INSTALLED_APPS = [
     'core',
     'apps.user',
     'apps.user_profile',
-    'apps.car'
+    'apps.car',
+    'apps.autoclub',
 ]
 
 MIDDLEWARE = [

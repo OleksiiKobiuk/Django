@@ -1,6 +1,8 @@
 import datetime
-from rest_framework import serializers
+
 from django.core.validators import RegexValidator
+
+from rest_framework import serializers
 
 from core.models import CarModel
 
@@ -33,3 +35,4 @@ class CarByUserIdSerializer(CarSerializer): #серіалайзер для ст�
     class Meta:
         model = CarModel
         fields = ('id', 'brand', 'model', 'year', 'brand_name')
+
