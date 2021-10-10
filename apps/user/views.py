@@ -1,12 +1,19 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, UpdateAPIView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny, IsAdminUser # AllowAny - дозвіл доступу для всіх і можна буде створити нового користувача,
+
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.permissions import (  # AllowAny - дозвіл доступу для всіх і можна буде створити нового користувача,
+    AllowAny,
+    IsAdminUser,
+)
+
+from apps.car.serializers import CarByUserIdSerializer
+
+from ..user_profile.serializers import ProfilePhotoSerializer
+from .user_serializers import UserSerializer, UserUpdateSerializer
+
 # коли вже встановлений JWT. IsAdminUser дозволяє визначені дії лише адмінам (в БД is_staff = 1)
 
-from .user_serializers import UserSerializer, UserUpdateSerializer
-from apps.car.serializers import CarByUserIdSerializer
-from ..user_profile.serializers import ProfilePhotoSerializer
 
 UserModel: User = get_user_model()
 

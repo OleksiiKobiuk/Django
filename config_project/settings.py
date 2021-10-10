@@ -22,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY') # дані будуть підтягуватися із файлу .env
+SECRET_KEY = os.environ.get('SECRET_KEY', '!qazxsw2') # дані будуть підтягуватися із файлу .env; після коми
+# додаємо дефолтне значення, щоб в консолі не вивалювалася помилка "The SECRET_KEY setting must not be empty"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') == 'True' # для отримання булівського значення
@@ -91,7 +93,7 @@ WSGI_APPLICATION = 'config_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'test_db'),  # другий параметр - дефолтне значення
+        'NAME': os.environ.get('DB_NAME', 'django2_db'),  # другий параметр - дефолтне значення
         'USER': os.environ.get('DB_USER', 'root'),
         'PASSWORD': os.environ.get('DB_PASSWORD', '!qazxsw2'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
