@@ -7,6 +7,7 @@ from apps.car.serializers import CarSerializer
 from apps.user_profile.serializers import ProfileSerializer
 from core.manager import CustomUserManager
 from core.models import ProfileModel
+from core.services.mail_service import MailService
 
 UserModel = get_user_model()
 
@@ -18,13 +19,15 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = ('id', 'email', 'password', 'profile', 'cars', 'auto_clubs')
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'auto_clubs': {'read_only': True} # зробив необов'язковим полем, щоб уникнути помилку: Direct assignment to the reverse side of a many-to-many set is prohibited. Use auto_clubs.set() instead.
         }
 
     def create(self, validated_data):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(user=user, **profile)
+        MailService.register_mail_sender(profile.get('name'), user.email) # сервіс для відправки повідомлення на пошту при реєстрації
         # password = validated_data.pop('password')
         # model = UserModel(**validated_data)
         # model.set_password(password)

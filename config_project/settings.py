@@ -13,6 +13,7 @@ import os.path
 from pathlib import Path
 
 from .jwt_conf import *  # для токінів
+from .mail_conf import *
 from .rest_config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
