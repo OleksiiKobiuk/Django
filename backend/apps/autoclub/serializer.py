@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
-from apps.user.user_serializers import UserUpdateSerializer
-from core.models.autoclub_model import AutoClubModel
+from backend.apps.user.user_serializers import UserUpdateSerializer
+from backend.core.models.autoclub_model import AutoClubModel
 
 
 # додавання юзерів в автоклуб

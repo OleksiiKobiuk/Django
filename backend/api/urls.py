@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
-from django.urls import path, include
+from django.urls import include, path
 
-from config_project import settings
+from backend.config_project import settings
 
 urlpatterns = [
     path('api/v1/', include('api.api_v1'))

@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 
 from rest_framework import serializers
 
-from core.models import CarModel
+from backend.core.models import CarModel
 
 # serializer переводить в JSON і назад
 

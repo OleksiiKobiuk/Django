@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from core.services.upload_photo import upload_to
+from backend.core.services.upload_photo import upload_to
 
 UserModel = get_user_model()
 

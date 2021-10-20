@@ -12,17 +12,13 @@
 # def add_car(request, model, year):
 #     cars.append({'model': model, 'year': year})
 #     return render(request, 'index.html', {'cars': cars})
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.models import CarModel
-from core.paginations.car_paginator import CarPagination
-from core.filters.car_filter import CarFilter
+from backend.core.filters.car_filter import CarFilter
+from backend.core.models import CarModel
+from backend.core.paginations.car_paginator import CarPagination
+
 from .serializers import CarSerializer
 
 # class MyView(APIView):
