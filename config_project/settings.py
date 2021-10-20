@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os.path
 from pathlib import Path
 
+from .jwt_conf import *  # для токінів
+from .mail_conf import *
+from .rest_config import *
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,26 +24,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x0nv4-_g=^jh(!0u_xer#)d6^9)7ziv5wij=+c+=5$g(4=i=l$'
+SECRET_KEY = os.environ.get('SECRET_KEY', '!qazxsw2') # дані будуть підтягуватися із файлу .env; після коми
+# додаємо дефолтне значення, щоб в консолі не вивалювалася помилка "The SECRET_KEY setting must not be empty"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'True' # для отримання булівського значення
 
 ALLOWED_HOSTS = []
+
+AUTH_USER_MODEL = 'core.CustomUser'
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters', #додаємо після встановлення даного пакету (pipenv install django-filter)
+    'rest_framework_simplejwt', # додаємо після встановлення даного пакету (pipenv install djangorestframework-simplejwt)
+    'rest_framework_simplejwt.token_blacklist', # в БД додастся таблиця, в якій будуть зберігатися токіни, що вже заборонені
+    
 
-    'car',
-    'calc'
+
+    'core',
+    'apps.user',
+    'apps.user_profile',
+    'apps.car',
+    'apps.autoclub',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +69,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config_project.urls'
+ROOT_URLCONF = 'api.urls'
 
 TEMPLATES = [
     {
@@ -79,11 +96,11 @@ WSGI_APPLICATION = 'config_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django2_db',
-        'USER': 'root',
-        'PASSWORD': '!qazxsw2',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'NAME': os.environ.get('DB_NAME', 'django2_db'),  # другий параметр - дефолтне значення
+        'USER': os.environ.get('DB_USER', 'root'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', '!qazxsw2'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '3306')
     }
 }
 
@@ -124,8 +141,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'  # по даній url користувач зможе стягувати фотографії (localhost:8000/media/images/назва файлу з фото)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'data')   # там, де файли будуть зберігатися локально: в корені нашого проекту буде папка data, куди зберігатимемо фото
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# APPEND_SLASH = False # можна вкінці urls (у файлах) не прописувати слеш /
