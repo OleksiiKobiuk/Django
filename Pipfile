@@ -12,8 +12,8 @@ Django = "*"
 djangorestframework = "*"
 django-filter = "*"
 djangorestframework-simplejwt = "*"
-django-dotenv = "*"
 pillow = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 isort = "*"

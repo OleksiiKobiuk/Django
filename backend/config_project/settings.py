@@ -35,6 +35,8 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'core.CustomUser'
 
+CORS_ALLOW_ALL_ORIGINS = True # При True любий сайт має доступ до API нашого сайту
+
 
 # Application definition
 
@@ -46,11 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'django_filters', #додаємо після встановлення даного пакету (pipenv install django-filter)
     'rest_framework_simplejwt', # додаємо після встановлення даного пакету (pipenv install djangorestframework-simplejwt)
     'rest_framework_simplejwt.token_blacklist', # в БД додастся таблиця, в якій будуть зберігатися токіни, що вже заборонені
-    
-
 
     'core',
     'apps.user',
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

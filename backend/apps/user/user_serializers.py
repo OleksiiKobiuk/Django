@@ -1,13 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from apps.car.serializers import CarSerializer
-from apps.user_profile.serializers import ProfileSerializer
-from core.manager import CustomUserManager
-from core.models import ProfileModel
-from core.services.mail_service import MailService
+from backend.apps.car.serializers import CarSerializer
+from backend.apps.user_profile.serializers import ProfileSerializer
+from backend.core.models import ProfileModel
+from backend.core.services.mail_service import MailService
 
 UserModel = get_user_model()
 

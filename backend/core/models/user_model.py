@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 # import datetime  #Для визначення лише дати нижче в полях created_at & updated_at
-from core.manager import CustomUserManager
+from backend.core.manager import CustomUserManager
 
 # class CustomUser(AbstractUser):
 #     class Meta:

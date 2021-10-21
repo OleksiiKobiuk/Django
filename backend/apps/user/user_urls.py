@@ -1,7 +1,6 @@
 from django.urls import path
 
 from .views import UserListCreateView, UserRetrieveUpdateDelete, AddCarByUserIdView, UploadPhotoToProfileView
-from apps.car.views import CarCreateListView
 
 urlpatterns = [
     path('', UserListCreateView.as_view(), name = 'user_list_create'),

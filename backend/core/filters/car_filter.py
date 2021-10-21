@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from core.models import CarModel
+from backend.core.models import CarModel
 
 
 class CarFilter(filters.FilterSet):
