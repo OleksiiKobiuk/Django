@@ -1,36 +1,42 @@
-version: "3.7"
+version: "3.8"
 
 services:
-  app:
-    context: . #крапка вказує, що сервіс створить апку з Dockerfile, що знаходиться в тій же директорії (на тому ж рівні, що і даний файл)
-  ports:
-    - "8000:8000" #ліва сторона - як буде джанго запускатися на локальній машині, а права - як на віртуальній
-  volumes:  #наче дзеркало, яке вказує на віртуальні і локальні папки, якшо щось змінить в одній, то автоматично зміниться і в іншій
-    - ./backend:/app  #локальна папка backend буде дзеркалювати з віртуальною, створеною на крок раніше, папкою app
-  env_file:  # після цього можна видаляти із pipenv django-dotenv, якщо останній був установлений
-    - .env
-  restart: on-failure  # вибираємо за якої умови рестартувати програму
+  app:    # app відповідає за бекенд
+    build:
+      context: . #крапка вказує, що сервіс створить апку з Dockerfile, що знаходиться в тій же директорії (на тому ж рівні, що і даний файл)
+    ports:
+      - "8000:8000" #ліва сторона - як буде джанго запускатися на локальній машині, а права - як на віртуальній
+    volumes:  #наче дзеркало, яке вказує на віртуальні і локальні папки, якшо щось змінить в одній, то автоматично зміниться і в іншій
+      - ./backend:/app  #локальна папка backend буде дзеркалювати з віртуальною, створеною на крок раніше, папкою app
+    env_file:  # після цього можна видаляти із pipenv django-dotenv, якщо останній був установлений
+      - .env
+    restart: on-failure  # вибираємо за якої умови рестартувати програму (on-failure - при помилці)
 
   # команда для запуску проекту. 0.0.0.0 дозволяють по мережі спілкуватися з API проекту, відкривають доступ до всієї мережі
-  command: >
-    sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+    command: >
+      sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
 
 
 # СЕРВІС БАЗИ ДАНИХ
-db:
-  image: mysql:8.0
-  ports:
-    - "3308:3306"
-  env_file:
-    - .env
-  restart: on-failure
-  volumes:
-    - ./mysql:var/lib/mysql
+  db:
+    image: mysql:8.0
+    ports:
+      - "3308:3306"
+    env_file:
+      - .env
+    restart: on-failure
+    volumes:
+      - ./mysql:/var/lib/mysql
 
-web:
-  image: nqinx:alpine
-  ports:
-    - "80:80"
-  restart: on-failure
+
+# Для підняття веб-серверу, щоб бачити фронт
+  web:
+    image: nqinx:alpine
+    ports:
+     - "80:80"
+    restart: on-failure
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
 
