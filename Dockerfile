@@ -1,6 +1,6 @@
 # файл для опису образу контейнера Докера з Linux
 
-FROM python:3.10-alpine
+FROM python:3.9-alpine
 #створювач образу
 MAINTAINER SomeDev
 ENV PYTHONUNBUFFERED 1
@@ -26,9 +26,12 @@ ENV PATH="/home/user/.local/bin:${PATH}"
 
 # вказуємо версію pip 21.01, оскільки станом на 23.07.2021 наступні версії погано працювали з Докером
 RUN python -m pip install pip==21.0.1 && pip install --user pipenv
+#RUN pip install --user pipenv
 # після && вказується наступна команда до виконання
 
-COPY Pipfile* /tmp/
+#COPY Pipfile* /tmp/
+COPY ./Pipfile* /home/user/
 # копіюємо всі pip-файли (і Pipfile, і Pipfile.lock) в тимчасову папку Лінукса tmp
 
-RUN cd /tmp && pipenv lock -r > requirements.txt && pip install --user -r requirements.txt
+#RUN cd /tmp && pipenv lock -r > requirements.txt && pip install --user -r requirements.txt
+RUN cd /home/user && pipenv lock --dev --requirements > requirements.txt && pip install --user -r requirements.txt
