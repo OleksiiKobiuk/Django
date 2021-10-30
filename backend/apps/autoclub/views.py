@@ -1,7 +1,7 @@
 from rest_framework.generics import UpdateAPIView
 from rest_framework.permissions import AllowAny
 
-from backend.core.models import AutoClubModel
+from core.models import AutoClubModel
 
 from .serializer import AutoClubAddUsersSerializer
 

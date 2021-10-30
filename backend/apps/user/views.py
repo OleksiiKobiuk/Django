@@ -7,7 +7,7 @@ from rest_framework.permissions import (  # AllowAny - дозвіл доступ
     IsAdminUser,
 )
 
-from backend.apps.car.serializers import CarByUserIdSerializer
+from apps.car.serializers import CarByUserIdSerializer
 
 from ..user_profile.serializers import ProfilePhotoSerializer
 from .user_serializers import UserSerializer, UserUpdateSerializer

@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 
+from core.services.upload_photo import upload_to
 
 class Migration(migrations.Migration):
 
@@ -14,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profilemodel',
             name='photo',
-            field=models.ImageField(upload_to=backend.core.services.upload_photo.upload_to),
+            field=models.ImageField(upload_to=upload_to),
         ),
         migrations.CreateModel(
             name='AutoClubModel',

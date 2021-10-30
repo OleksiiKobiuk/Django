@@ -15,9 +15,9 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from backend.core.models import CarModel
-from backend.core.paginations.car_paginator import CarPagination
-from backend.core.filters.car_filter import CarFilter
+from core.models import CarModel
+from core.paginations.car_paginator import CarPagination
+from core.filters.car_filter import CarFilter
 from .serializers import CarSerializer
 
 # class MyView(APIView):
