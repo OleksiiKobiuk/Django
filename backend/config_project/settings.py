@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '!qazxsw2') # дані будуть п
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') == 'True' # для отримання булівського значення
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['app']
 
 AUTH_USER_MODEL = 'core.CustomUser'
 
