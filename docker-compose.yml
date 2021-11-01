@@ -10,7 +10,6 @@ services:
     #наче дзеркало, яке вказує на віртуальні і локальні папки, якшо щось змінить в одній, то автоматично зміниться і в іншій
     volumes:
       - ./backend:/app
-#      - ./app:/backend
        #локальна папка backend буде дзеркалювати з віртуальною, створеною на крок раніше, папкою app
 
     env_file:  # після цього можна видаляти із pipenv django-dotenv, якщо останній був установлений
@@ -19,7 +18,7 @@ services:
 
   # команда для запуску проекту. 0.0.0.0 дозволяють по мережі спілкуватися з API проекту, відкривають доступ до всієї мережі
     command: >
-      sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+      sh -c 'python manage.py wait_for_db && python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
 
 
 # СЕРВІС БАЗИ ДАНИХ
