@@ -43,4 +43,19 @@ services:
       - ./frontend:/usr/share/nginx/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
+#  Додаємо сервіси для роботи з celery та локальною БД redis
+  redis:
+    image: redis:alpine
+
+  celery:
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+    - ./backend:/app
+    command: >
+      celery -A config_project worker -l info
+
+
 

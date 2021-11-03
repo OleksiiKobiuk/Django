@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from core.tasks.mail_task import mail_send_task
+
 
 from rest_framework import serializers
 
@@ -25,7 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(user=user, **profile)
-        MailService.register_mail_sender(profile.get('name'), user.email) # сервіс для відправки повідомлення на пошту при реєстрації
+        mail_send_task.delay(profile.get('name'), user.email) # сервіс для відправки повідомлення на пошту при реєстрації сервіси celery
+        # MailService.register_mail_sender(profile.get('name'), user.email) # сервіс для відправки повідомлення на пошту при реєстрації через Django
         # password = validated_data.pop('password')
         # model = UserModel(**validated_data)
         # model.set_password(password)
