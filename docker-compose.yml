@@ -55,7 +55,7 @@ services:
     volumes:
     - ./backend:/app
     command: >
-      celery -A config_project worker -l info
+      celery -A config_project worker -l info -B
 
 
 

@@ -17,6 +17,7 @@ django-cors-headers = "*"
 docker = "*"
 celery = "*"
 redis = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 isort = "*"
